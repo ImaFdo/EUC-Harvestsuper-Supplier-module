@@ -1,0 +1,193 @@
+<mat-grid-list [cols]="12" rowHeight="4rem">
+
+  <mat-grid-tile [colspan]="4" [rowspan]="10">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Item Detail</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content id="itemform">
+        <form [formGroup]="form">
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+              <mat-option [value]="null" >Not Selected</mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category">{{category.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Sub Category</mat-label>
+            <mat-select formControlName="subcategory">
+              <mat-option [value]="null" >Not Selected</mat-option>
+              <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory">{{subcategory.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Brand</mat-label>
+            <mat-select formControlName="brand">
+              <mat-option [value]="null" >Not Selected</mat-option>
+              <mat-option *ngFor="let brand of brands" [value]="brand">{{brand.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Code</mat-label>
+            <input matInput formControlName="code">
+          </mat-form-field>
+
+          <div id="imgpanel">
+            <img [src]="imageitmurl">
+            <input id="userImage" hidden="hidden" (change)="selectImage($event)" Select type="file" formControlName="photo">
+            <label for="userImage" id="selectbutton">Select</label>
+            <label id="clearbutton" (click)="clearImage()">Clear</label>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>selling price</mat-label>
+            <input matInput formControlName="sprice">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Purchase Price</mat-label>
+            <input matInput formControlName="pprice">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Quantity</mat-label>
+            <input matInput formControlName="quantity">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Re Order Point</mat-label>
+            <input matInput formControlName="rop">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Introduced Date</mat-label>
+            <input matInput  [matDatepicker]="intdate" formControlName="dointroduced">
+            <mat-datepicker-toggle matIconSuffix [for]="intdate"></mat-datepicker-toggle>
+            <mat-datepicker #intdate></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Unit Type</mat-label>
+            <mat-select formControlName="unittype">
+              <mat-option [value]="null" >Not Selected</mat-option>
+              <mat-option *ngFor="let unittype of unittypes" [value]="unittype">{{unittype.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Item Status</mat-label>
+            <mat-select formControlName="itemstatus">
+              <mat-option [value]="null" >Not Selected</mat-option>
+              <mat-option *ngFor="let itemstatus of itemstatuses" [value]="itemstatus">{{itemstatus.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div id="butpanel">
+            <button mat-raised-button  (click)="add()" [disabled]="!enaadd">Add</button>
+            <button mat-raised-button (click)="clear()">Clear</button>
+            <button mat-raised-button [disabled]="!enaupd" (click)="update()">Update</button>
+            <button mat-raised-button  [disabled]="!enadel" (click)="delete()">Delete</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+
+
+  <mat-grid-tile [colspan]="8" [rowspan]="4">
+    <mat-card id="ssearch">
+      <mat-card-header>
+        <mat-card-title>Item Search</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="ssearch">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Search by Name</mat-label>
+            <input matInput formControlName="ssname">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Search by Code</mat-label>
+            <input matInput formControlName="sscode">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="ssstatus">
+              <mat-option [value]="null" >Not Selected</mat-option>
+              <mat-option *ngFor="let itemstatus of itemstatuses" [value]="itemstatus.id">{{itemstatus.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div>
+            <button mat-raised-button color="primary" (click)="btnSearchMc()"><mat-icon>search</mat-icon> Search </button>
+            <button mat-raised-button color="primary" (click)="btnSearchClearMc()" ><mat-icon>reorder</mat-icon> Clear Search </button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+
+
+  <mat-grid-tile [colspan]="8" [rowspan]="6">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Item Table</mat-card-title>
+        <div id="loading">
+          <img [src]="imageurl">
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <mat-table [dataSource]="data">
+
+          <ng-container *ngFor="let column of columns;let i = index;" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef> {{headers[i]}} </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ uiassist.getProperty(element, binders[i]) }} </mat-cell>
+          </ng-container>
+
+          <ng-container *ngFor="let cscolumn of cscolumns;let i = index;" [matColumnDef]="cscolumn">
+            <mat-header-cell *matHeaderCellDef>
+              <form [formGroup]="csearch" class="csearch">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{csprompts[i]}}</mat-label>
+                  <input matInput [formControlName]="cscolumn"
+                         (keyup)="filterTable()">
+                </mat-form-field>
+              </form>
+            </mat-header-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+          <mat-header-row *matHeaderRowDef="cscolumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columns;" (click)="fillForm(row)" [ngClass]="{'selected-row': row === selectedrow}"></mat-row>
+
+        </mat-table>
+
+        <mat-paginator [length]="20" [pageSize]="3" [pageSizeOptions]="[3,5,10,20]"></mat-paginator>
+
+      </mat-card-content>
+
+    </mat-card>
+  </mat-grid-tile>
+
+</mat-grid-list>
+
+
+
+
+

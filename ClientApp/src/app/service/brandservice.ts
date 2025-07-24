@@ -1,0 +1,26 @@
+import {Brand} from "../entity/brand";
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class BrandService {
+
+  constructor(private http: HttpClient) {  }
+
+  async getAllList(): Promise<Array<Brand>> {
+
+    const brands = await this.http.get<Array<Brand>>('http://localhost:8080/brands/list').toPromise();
+    if(brands == undefined){
+      return [];
+    }
+    return brands;
+  }
+
+
+
+}
+
+
